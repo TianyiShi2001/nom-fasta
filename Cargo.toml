@@ -1,0 +1,12 @@
+[package]
+name = "fasta"
+version = "0.0.1"
+authors = ["Tianyi Shi <ShiTianyi2001@outlook.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+nom = "5"
+lazy_static = "1"
+bio = "0.32"
