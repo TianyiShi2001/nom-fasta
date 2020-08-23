@@ -1,6 +1,5 @@
 pub type BoxError = Box<dyn std::error::Error>;
-use nom::branch::alt;
-use nom::bytes::complete::{is_not, tag, take_while};
+use nom::bytes::complete::{is_not, take_while};
 use nom::character::complete::{char, line_ending, not_line_ending};
 use nom::multi::fold_many1;
 use nom::sequence::terminated;
@@ -56,7 +55,7 @@ pub fn record(i: &str) -> IResult<&str, Record> {
     let (i, title) = not_line_ending(i)?;
     let (i, _) = line_ending(i)?;
     let (i, seq) = seq(i)?;
-    let (i, j) = take_while(|x| x != '>')(i)?;
+    let (i, _) = take_while(|x| x != '>')(i)?;
     let mut header_fields = title.trim_end().splitn(2, char::is_whitespace);
     let id = header_fields.next().map(|s| s.to_owned()).unwrap();
     let desc = header_fields.next().map(|s| s.to_owned());
