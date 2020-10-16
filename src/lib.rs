@@ -6,16 +6,16 @@ use nom::sequence::terminated;
 use nom::IResult;
 
 #[derive(Default, Clone, Debug)]
-pub struct Record {
-    id: String,
-    desc: Option<String>,
+pub struct Record<'a> {
+    id: &'a str,
+    desc: Option<&'a str>,
     seq: String,
 }
 
 pub struct Records<'a>(pub &'a str);
 
 impl<'a> Iterator for Records<'a> {
-    type Item = Result<Record, String>;
+    type Item = Result<Record<'a>, String>;
     fn next(&mut self) -> Option<Self::Item> {
         if self.0.is_empty() {
             return None;
@@ -57,8 +57,8 @@ pub fn record(i: &str) -> IResult<&str, Record> {
     let (i, seq) = seq(i)?;
     let (i, _) = take_while(|x| x != '>')(i)?;
     let mut header_fields = title.trim_end().splitn(2, char::is_whitespace);
-    let id = header_fields.next().map(|s| s.to_owned()).unwrap();
-    let desc = header_fields.next().map(|s| s.to_owned());
+    let id = header_fields.next().unwrap();
+    let desc = header_fields.next();
     Ok((i, Record { id, desc, seq }))
 }
 
